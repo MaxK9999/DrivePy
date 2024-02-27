@@ -1,17 +1,20 @@
+#!/usr/bin/env python
 import folium
-from folium.plugins import Search, MarkerCluster
+from folium.plugins import MarkerCluster
 import csv
 import argparse
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Create a map from wardriving data in a CSV file.')
+    parser = argparse.ArgumentParser(description='Create a map from wardriving data in a CSV file. ')
     parser.add_argument('csv_file', help='Path to the CSV file containing wardriving data')
     return parser.parse_args()
 
 
 def parse_csv(file_path):
     access_points = []
+    
+    # Fetches Marauder Wardriving data from CSV file
     with open(file_path, 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
         for row in csv_reader:
