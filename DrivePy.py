@@ -45,11 +45,6 @@ def create_map(access_points):
         marker = folium.Marker(location=[ap[2], ap[3]], popup=popup_text)
         marker.add_to(marker_cluster)
 
-    # Add a new layer for the search control
-    search_layer = folium.FeatureGroup(name='Search').add_to(mymap)
-
-    # Add search control to the new layer
-    search_control = Search(layer=search_layer, text='SSID: {name} MAC: {mac}').add_to(mymap)
 
     # Add LayerControl to switch between layers
     folium.LayerControl().add_to(mymap)
