@@ -14,4 +14,12 @@ Simple Python script that parses Marauder Wardriving CSV files, and submits pars
 
 run "pip install -r requirements.txt"
 
+
+
+
+
+
+
+
+
 inspired by CreepDetector.ipynb by "Alex Lynd" and "skickar"
