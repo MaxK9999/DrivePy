@@ -6,8 +6,22 @@ import argparse
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Create a map from wardriving data in a CSV file. ')
+    custom_usage = '''%(prog)s [options] [CSV_FILE]'''
+    parser = argparse.ArgumentParser(description=
+    '''
+    Create a map from wardriving data in a CSV file.
+    The CSV file should contain at least the following columns:
+    
+    MAC, SSID, Latitude, Longitude, Signal Strength.
+    
+    Made for Flipper Zero using Marauder.
+    '''
+    , 
+    formatter_class=argparse.RawTextHelpFormatter,
+    usage=custom_usage,
+    )                
     parser.add_argument('csv_file', help='Path to the CSV file containing wardriving data')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
     return parser.parse_args()
 
 
