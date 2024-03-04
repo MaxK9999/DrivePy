@@ -3,12 +3,17 @@ import folium
 from folium.plugins import MarkerCluster
 import csv
 import argparse
+from gui import create_gui
+import sys
 
 
 def parse_args():
     custom_usage = '''%(prog)s [options] [CSV_FILE]'''
     parser = argparse.ArgumentParser(description=
     '''
+    To run from desktop use no aguments,
+    for CLI use path to CSV file.
+    
     Create a map from wardriving data in a CSV file.
     The CSV file should contain at least the following columns:
     
@@ -20,7 +25,7 @@ def parse_args():
     formatter_class=argparse.RawTextHelpFormatter,
     usage=custom_usage,
     )                
-    parser.add_argument('csv_file', help='Path to the CSV file containing wardriving data')
+    parser.add_argument('csv_file', nargs='?', default=None, help='Path to the CSV file containing wardriving data')
     parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
     return parser.parse_args()
 
@@ -70,13 +75,25 @@ def create_map(access_points):
     mymap.save('wardriving_map.html')
 
 
-def main():
+def main_cli():
     args = parse_args()
     csv_file_path = args.csv_file
 
     # Parse CSV and create map
     access_points_data = parse_csv(csv_file_path)
     create_map(access_points_data)
+    
+    
+def main_gui():
+    root = create_gui()
+    
+    # Run the tkinter main loop
+    root.mainloop()
+    
 
 if __name__ == "__main__":
-    main()
+    # Check if script is run as CLI or GUI
+    if len(sys.argv) > 1:
+        main_cli()
+    else:
+        main_gui()
