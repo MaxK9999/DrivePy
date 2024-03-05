@@ -26,7 +26,7 @@ def print_banner():
     # Render and print the ASCII art with color
     ascii_banner = fig.renderText(banner_text)
     for line in ascii_banner.split('\n'):
-        colored_line = f"{color_start}{line.center(70)}{color_end}"
+        colored_line = f"{color_start}{line.center(10)}{color_end}"
         print(colored_line)
         
 

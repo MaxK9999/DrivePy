@@ -1,2 +1,5 @@
 __pycache__
 wardriving_map.html
+/build/
+/dist/
+*.spec
