@@ -45,5 +45,8 @@ def create_map(access_points):
     # Add LayerControl to switch between layers
     folium.LayerControl().add_to(mymap)
 
+    # Save the map as an HTML file
+    mymap.save("wardriving_map.html")
+    
     # Open the generated HTML file in the default web browser
     webbrowser.open("wardriving_map.html")
