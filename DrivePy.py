@@ -2,7 +2,7 @@
 import argparse
 import sys
 from map_utils import parse_csv, create_map
-from gui_utils import create_gui
+from gui.gui_utils import create_gui
 import pyfiglet
 import random
 
@@ -51,6 +51,9 @@ def parse_args():
     )                
     parser.add_argument('csv_file', nargs='?', default=None, help='Path to the CSV file containing wardriving data')
     parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
+    parser.add_argument('-s', '--ssid', help='Filter by SSID')
+    parser.add_argument('-m', '--mac', help='Filter by MAC address')
+    
     return parser.parse_args()
 
 
@@ -60,6 +63,15 @@ def main_cli():
 
     # Parse CSV and create map
     access_points_data = parse_csv(csv_file_path)
+    
+    # Add filters if provided
+    if args.ssid:
+        access_points_data = [ap for ap in access_points_data if args.ssid in ap[1]]
+    
+    if args.mac:
+        access_points_data = [ap for ap in access_points_data if args.mac in ap[0]]
+    
+    # Create map
     create_map(access_points_data)
     
     
