@@ -4,10 +4,38 @@ import sys
 from map_utils import parse_csv, create_map
 from gui_utils import create_gui
 import pyfiglet
+import random
 
+
+def print_banner():
+    banner_text = "DrivePy"
+
+    # List of preferred fonts
+    preferred_fonts = ['cricket', 'isometric2', 'banner3-D', 'larry3d', 'smslant', 'letters', 'poison', 'univers']
+
+    # Choose a random font from the preferred list
+    selected_font = random.choice(preferred_fonts)
+
+    # Create Figlet instance with the selected font
+    fig = pyfiglet.Figlet(font=selected_font)
+
+    # Define ANSI escape codes for color (e.g., red text)
+    color_start = '\033[94m'  # 91 corresponds to red
+    color_end = '\033[0m'  # Reset color
+
+    # Render and print the ASCII art with color
+    ascii_banner = fig.renderText(banner_text)
+    for line in ascii_banner.split('\n'):
+        colored_line = f"{color_start}{line.center(70)}{color_end}"
+        print(colored_line)
+        
 
 def parse_args():
     custom_usage = '''%(prog)s [options] [CSV_FILE]'''
+    
+    # Display the banner with a randomly selected font
+    print_banner()
+
     parser = argparse.ArgumentParser(description=
     '''    
     Create a map from wardriving data in a CSV file.
