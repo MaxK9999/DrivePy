@@ -51,8 +51,8 @@ def parse_args():
     )                
     parser.add_argument('csv_file', nargs='?', default=None, help='Path to the CSV file containing wardriving data')
     parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
-    parser.add_argument('-s', '--ssid', help='Filter by SSID')
-    parser.add_argument('-m', '--mac', help='Filter by MAC address')
+    parser.add_argument('-s', '--ssid', help='Filter by SSID, add double quotes to SSID if it contains spaces to prevent bugs.\nPut commas in between multiple SSIDs')
+    parser.add_argument('-m', '--mac', help='Filter by MAC address, put commas in between multiple MAC addresses')
     
     return parser.parse_args()
 
@@ -66,10 +66,12 @@ def main_cli():
     
     # Add filters if provided
     if args.ssid:
-        access_points_data = [ap for ap in access_points_data if args.ssid in ap[1]]
-    
+        ssids = args.ssid.split(',')
+        access_points_data = [ap for ap in access_points_data if any(ssid in ap[1] for ssid in ssids)]
+
     if args.mac:
-        access_points_data = [ap for ap in access_points_data if args.mac in ap[0]]
+        macs = args.mac.split(',')
+        access_points_data = [ap for ap in access_points_data if any(mac in ap[0] for mac in macs)]
     
     # Create map
     create_map(access_points_data)
