@@ -1,7 +1,7 @@
 # GUI helper file for DrivePy to run from desktop
 import customtkinter
 from tkinter import filedialog, StringVar, ttk
-from map_utils import parse_csv, create_map
+from app_utils import parse_csv, create_map
 
 
 def choose_file(entry_var):

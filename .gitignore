@@ -3,3 +3,5 @@ wardriving_map.html
 /build/
 /dist/
 *.spec
+*summary.txt
+*.log

@@ -3,6 +3,7 @@ import folium
 from folium.plugins import MarkerCluster
 import csv
 import webbrowser
+import pandas as pd
 
 
 def parse_csv(file_path):
@@ -50,3 +51,26 @@ def create_map(access_points):
     
     # Open the generated HTML file in the default web browser
     webbrowser.open("wardriving_map.html")
+
+
+def create_summary_csv(access_points):
+    # Extract information after the pipe symbol and format MAC address
+    formatted_data = [
+        [str(item).split('|')[1].split(',')[0].strip() if len(str(item).split('|')) > 1 else str(item).strip() for item in ap]
+        for ap in access_points
+    ]
+
+    # Sort DataFrame by the "MAC" column
+    columns = ["MAC", "SSID", "Latitude", "Longitude", "Signal Strength"]
+    df = pd.DataFrame(formatted_data, columns=columns)
+    
+    # Set the width for each column
+    column_width = 25
+
+    # Save DataFrame to a new formatted text file with fixed width
+    formatted_content = df.to_string(index=False, justify='left', col_space=column_width)
+
+    with open('wardriving_summary.txt', 'w') as text_file:
+        text_file.write(formatted_content)
+
+    print("Summary text file created successfully.")

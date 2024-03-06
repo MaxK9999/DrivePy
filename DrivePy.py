@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 import argparse
 import sys
-from map_utils import parse_csv, create_map
+from app_utils import parse_csv, create_map, create_summary_csv
 from gui.gui_utils import create_gui
 import pyfiglet
 import random
+import pandas as pd
 
 
 def print_banner():
@@ -53,6 +54,7 @@ def parse_args():
     parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
     parser.add_argument('-s', '--ssid', help='Filter by SSID, add double quotes to SSID if it contains spaces to prevent bugs.\nPut commas in between multiple SSIDs')
     parser.add_argument('-m', '--mac', help='Filter by MAC address, put commas in between multiple MAC addresses')
+    parser.add_argument('-c', '--csv', help='Creates summary CSV file instead of creating map', action='store_true')
     
     return parser.parse_args()
 
@@ -73,9 +75,12 @@ def main_cli():
         macs = args.mac.split(',')
         access_points_data = [ap for ap in access_points_data if any(mac in ap[0] for mac in macs)]
     
-    # Create map
-    create_map(access_points_data)
-    
+    if args.createcsv:
+        create_summary_csv(access_points_data)    
+    else:
+        # Create map
+        create_map(access_points_data)
+        
     
 def main_gui():
     root = create_gui()
