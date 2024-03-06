@@ -1,4 +1,4 @@
-# map_utils.py
+# app_utils.py
 import folium
 from folium.plugins import MarkerCluster
 import csv
@@ -14,7 +14,7 @@ def parse_csv(file_path):
         csv_reader = csv.reader(csv_file)
         for row in csv_reader:
             try:
-                mac_address = row[0]
+                mac_address = str(row[0]).split('|')[1].split(',')[0].strip() if len(str(row[0]).split('|')) > 1 else str(row[0]).strip()
                 signal_strength = int(row[5])
                 ssid = row[1]
                 lat = float(row[6])
@@ -54,15 +54,9 @@ def create_map(access_points):
 
 
 def create_summary_csv(access_points):
-    # Extract information after the pipe symbol and format MAC address
-    formatted_data = [
-        [str(item).split('|')[1].split(',')[0].strip() if len(str(item).split('|')) > 1 else str(item).strip() for item in ap]
-        for ap in access_points
-    ]
-
     # Sort DataFrame by the "MAC" column
     columns = ["MAC", "SSID", "Latitude", "Longitude", "Signal Strength"]
-    df = pd.DataFrame(formatted_data, columns=columns)
+    df = pd.DataFrame(access_points, columns=columns)
     
     # Set the width for each column
     column_width = 25
@@ -74,3 +68,20 @@ def create_summary_csv(access_points):
         text_file.write(formatted_content)
 
     print("Summary text file created successfully.")
+
+
+def check_vendors(access_points, vendors_file_path, specified_vendor):
+    vendors = {}
+
+    # Read MAC vendors file and create a dictionary
+    with open(vendors_file_path, 'r', encoding='utf-8') as vendors_file:
+        for line in vendors_file:
+            mac, vendor = line.strip().split('\t', 1)
+            vendors[mac] = vendor
+
+    matched_vendors = [(ap[0], vendors.get(ap[0][:8], 'Unknown Vendor')) for ap in access_points if ap[0][:8] in vendors]
+    
+    # Filter the matched vendors for the specified vendor
+    specified_vendor_matches = [(mac, vendor) for mac, vendor in matched_vendors if vendor == specified_vendor]
+    
+    return specified_vendor_matches

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import sys
-from app_utils import parse_csv, create_map, create_summary_csv
+from app_utils import parse_csv, create_map, create_summary_csv, check_vendors
 from gui.gui_utils import create_gui
 import pyfiglet
 import random
@@ -55,6 +55,7 @@ def parse_args():
     parser.add_argument('-s', '--ssid', help='Filter by SSID, add double quotes to SSID if it contains spaces to prevent bugs.\nPut commas in between multiple SSIDs')
     parser.add_argument('-m', '--mac', help='Filter by MAC address, put commas in between multiple MAC addresses')
     parser.add_argument('-c', '--csv', help='Creates summary CSV file instead of creating map', action='store_true')
+    parser.add_argument('-mV', '--vendors', help='Check access points by vendor')
     
     return parser.parse_args()
 
@@ -75,10 +76,21 @@ def main_cli():
         macs = args.mac.split(',')
         access_points_data = [ap for ap in access_points_data if any(mac in ap[0] for mac in macs)]
     
-    if args.createcsv:
+    if args.vendors:
+        specified_vendor = args.vendors
+        vendors_file_path = "mac-vendors.txt"
+        matched_vendors = check_vendors(access_points_data, vendors_file_path, specified_vendor)
+        if matched_vendors:
+            for ap, vendor in matched_vendors:
+                print(f"MAC: {ap}, SSID: {ap[1]}, Vendor: {vendor}")
+        else:
+            print(f"No matching vendors found for specified vendor: {specified_vendor}")
+            sys.exit(1)
+    
+    if args.csv:
         create_summary_csv(access_points_data)    
     else:
-        # Create map
+        # Create map unless -c switch is provided (ommit else statement if you want to create a map regardless)
         create_map(access_points_data)
         
     
