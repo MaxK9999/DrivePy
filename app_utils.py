@@ -55,8 +55,15 @@ def create_map(access_points):
 
 def create_summary_csv(access_points):
     # Sort DataFrame by the "MAC" column
-    columns = ["MAC", "SSID", "Latitude", "Longitude", "Signal Strength"]
+    columns = [
+        "MAC",
+        "SSID",
+        "Latitude (Y)",
+        "Longitude (X)",
+        "Signal Strength",
+        ]
     df = pd.DataFrame(access_points, columns=columns)
+    df["Grid Accuracy"] = "Estimated"
     
     # Set the width for each column
     column_width = 25

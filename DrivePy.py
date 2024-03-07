@@ -5,7 +5,6 @@ from app_utils import parse_csv, create_map, create_summary_csv, check_vendors
 from gui.gui_utils import create_gui
 import pyfiglet
 import random
-import pandas as pd
 
 
 def print_banner():
