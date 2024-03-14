@@ -21,7 +21,6 @@ def print_banner():
         # Create Figlet instance with the selected font
         fig = pyfiglet.Figlet(font=selected_font)
     except pyfiglet.FontNotFound:
-        print("Error: Font not found. Using default font.")
         # Fall back to default font
         fig = pyfiglet.Figlet()
 
