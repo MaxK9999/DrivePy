@@ -31,31 +31,36 @@ def print_banner():
         
 
 def parse_args():
-    custom_usage = '''%(prog)s [options] [CSV_FILE]'''
-    
+    custom_usage = '''python %(prog)s [Specific Options]  [CSV_FILE]'''
+
     # Display the banner with a randomly selected font
     print_banner()
 
-    parser = argparse.ArgumentParser(description=
-    '''    
-    Create a map from wardriving data in a CSV file.
-    The CSV file should contain at least the following columns:
-    
-    MAC, SSID, Latitude, Longitude, Signal Strength.
-    
-    Made for Flipper Zero using Marauder.
-    '''
-    , 
-    formatter_class=argparse.RawTextHelpFormatter,
-    usage=custom_usage,
-    )                
-    parser.add_argument('csv_file', nargs='?', default=None, help='Path to the CSV file containing wardriving data')
+    parser = argparse.ArgumentParser(
+        description='Create a map from wardriving data in a CSV file.',
+        formatter_class=argparse.RawTextHelpFormatter,
+        usage=custom_usage,
+        )
+
+    # Create argument groups
+    specific_group = parser.add_argument_group('Specific Options')
+    logging_group = parser.add_argument_group('Logging Options')
+
+    # Add generic options
     parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
-    parser.add_argument('-s', '--ssid', help='Filter by SSID, add double quotes to SSID if it contains spaces to prevent bugs.\nPut commas in between multiple SSIDs')
-    parser.add_argument('-m', '--mac', help='Filter by MAC address, put commas in between multiple MAC addresses')
-    parser.add_argument('-c', '--csv', help='Creates summary CSV file instead of creating map', action='store_true')
-    parser.add_argument('-mV', '--vendors', help='Check access points by vendor')
+
+    # Add specific options to the specific group
+    specific_group.add_argument('-s', '--ssid', help='Filter by SSID, add double quotes to SSID if it contains spaces to prevent bugs.\nPut commas in between multiple SSIDs')
+    specific_group.add_argument('-m', '--mac', help='Filter by MAC address, put commas in between multiple MAC addresses')
+    specific_group.add_argument('-c', '--csv', help='Creates summary CSV file instead of creating map', action='store_true')
+    specific_group.add_argument('-mV', '--vendors', help='Check access points by vendor name')
     
+    # Add logging options to the logging group
+    logging_group.add_argument('--sort-by-ssid', help='Sort access points alphabetically by SSID', action='store_true')
+
+    # Positional argument
+    parser.add_argument('csv_file', nargs='?', default=None, help='Path to the CSV file containing wardriving data')
+
     return parser.parse_args()
 
 
@@ -87,7 +92,10 @@ def main_cli():
             sys.exit(1)
     
     if args.csv:
-        create_summary_csv(access_points_data)    
+        # ALPHABETICALLY SORT SSID COLUMN = 1
+        # OR 
+        # CHRONOLOGICALLY SORT DATE/TIME COLUMN = 2
+        create_summary_csv(access_points_data, sort_by_ssid=args.sort_by_ssid)    
     else:
         # Create map unless -c switch is provided (ommit else statement if you want to create a map regardless)
         create_map(access_points_data)

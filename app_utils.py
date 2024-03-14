@@ -54,7 +54,7 @@ def create_map(access_points):
     webbrowser.open("wardriving_map.html")
 
 
-def create_summary_csv(access_points):
+def create_summary_csv(access_points, sort_by_ssid=False):
     # Sort DataFrame by the "MAC" column
     columns = [
         "Name",
@@ -62,20 +62,24 @@ def create_summary_csv(access_points):
         "Latitude (Y)",
         "Longitude (X)",
         "Signal Strength",
-        # ADD DATE TIME
         "Date/Time",
         ]
     df = pd.DataFrame(access_points, columns=columns)
     df["Grid Accuracy"] = "Estimated"
     
+    # If sort_by_ssid is True, sort the DataFrame by SSID column, else sort by Date/Time column
+    if sort_by_ssid:
+        df.sort_values(by="SSID", inplace=True)
+    else:
+        df["Date/Time"] = pd.to_datetime(df["Date/Time"])
+        df.sort_values(by="Date/Time", inplace=True)
     
-    # Set the width for each column
+    # Define formatting for SSID column to left-align
     column_width = 25
+    formatters = {'SSID': lambda x: f'{x:<{column_width}}'}
 
     # Save DataFrame to a new formatted text file with fixed width
-    # ALPHABETICALLY SORT SSID COLUMN = 1
-    # CHRONOLOGICALLY SORT DATE/TIME COLUMN = 2
-    formatted_content = df.to_string(index=False, justify='left', col_space=column_width)
+    formatted_content = df.to_string(index=False, justify='left', col_space=column_width, formatters=formatters)
 
     with open('wardriving_summary.txt', 'w') as text_file:
         text_file.write(formatted_content)
