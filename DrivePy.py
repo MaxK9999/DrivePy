@@ -13,11 +13,17 @@ def print_banner():
     # List of preferred fonts
     preferred_fonts = ['cricket', 'isometric2', 'banner3-D', 'larry3d', 'smslant', 'letters', 'poison', 'univers']
 
-    # Choose a random font from the preferred list
-    selected_font = random.choice(preferred_fonts)
-
     # Create Figlet instance with the selected font
-    fig = pyfiglet.Figlet(font=selected_font)
+    try:
+        # Choose a random font from the preferred list
+        selected_font = random.choice(preferred_fonts)
+
+        # Create Figlet instance with the selected font
+        fig = pyfiglet.Figlet(font=selected_font)
+    except pyfiglet.FontNotFound:
+        print("Error: Font not found. Using default font.")
+        # Fall back to default font
+        fig = pyfiglet.Figlet()
 
     # Define ANSI escape codes for color (e.g., red text)
     color_start = '\033[94m'  
