@@ -20,7 +20,7 @@ def print_banner():
     fig = pyfiglet.Figlet(font=selected_font)
 
     # Define ANSI escape codes for color (e.g., red text)
-    color_start = '\033[94m'  # 91 corresponds to red
+    color_start = '\033[94m'  
     color_end = '\033[0m'  # Reset color
 
     # Render and print the ASCII art with color

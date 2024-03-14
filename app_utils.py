@@ -19,7 +19,8 @@ def parse_csv(file_path):
                 ssid = row[1]
                 lat = float(row[6])
                 lon = float(row[7])
-                access_points.append((mac_address, ssid, lat, lon, signal_strength))
+                date_time = row[3].strip()
+                access_points.append((mac_address, ssid, lat, lon, signal_strength, date_time))
             except (ValueError, IndexError):
                 # Skip lines with invalid format or missing values
                 pass
@@ -56,19 +57,24 @@ def create_map(access_points):
 def create_summary_csv(access_points):
     # Sort DataFrame by the "MAC" column
     columns = [
-        "MAC",
+        "Name",
         "SSID",
         "Latitude (Y)",
         "Longitude (X)",
         "Signal Strength",
+        # ADD DATE TIME
+        "Date/Time",
         ]
     df = pd.DataFrame(access_points, columns=columns)
     df["Grid Accuracy"] = "Estimated"
+    
     
     # Set the width for each column
     column_width = 25
 
     # Save DataFrame to a new formatted text file with fixed width
+    # ALPHABETICALLY SORT SSID COLUMN = 1
+    # CHRONOLOGICALLY SORT DATE/TIME COLUMN = 2
     formatted_content = df.to_string(index=False, justify='left', col_space=column_width)
 
     with open('wardriving_summary.txt', 'w') as text_file:
