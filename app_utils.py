@@ -6,21 +6,30 @@ import webbrowser
 import pandas as pd
 
 
-def parse_csv(file_path):
+def parse_csv(file_path, skip_duplicates=False):
     access_points = []
-    
+    encountered_macs = set()  # Set to store encountered MAC addresses
+
     # Fetches Marauder Wardriving data from CSV file
     with open(file_path, 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
         for row in csv_reader:
             try:
                 mac_address = str(row[0]).split('|')[1].split(',')[0].strip() if len(str(row[0]).split('|')) > 1 else str(row[0]).strip()
+
+                # Check if skip_duplicates is enabled and the MAC address has been encountered before
+                if skip_duplicates and mac_address in encountered_macs:
+                    continue
+
                 signal_strength = int(row[5])
                 ssid = row[1]
                 lat = float(row[6])
                 lon = float(row[7])
-                date_time = row[3].strip()
-                access_points.append((mac_address, ssid, lat, lon, signal_strength, date_time))
+
+                access_points.append((mac_address, ssid, lat, lon, signal_strength))
+
+                # Add the MAC address to the set of encountered MACs
+                encountered_macs.add(mac_address)
             except (ValueError, IndexError):
                 # Skip lines with invalid format or missing values
                 pass

@@ -36,7 +36,7 @@ def print_banner():
         
 
 def parse_args():
-    custom_usage = '''python %(prog)s [Specific Options]  [CSV_FILE]'''
+    custom_usage = '''python %(prog)s [Specific Options] [Logging Options] [CSV_FILE]'''
 
     # Display the banner with a randomly selected font
     print_banner()
@@ -65,6 +65,7 @@ def parse_args():
 
     # Positional argument
     parser.add_argument('csv_file', nargs='?', default=None, help='Path to the CSV file containing wardriving data')
+    parser.add_argument('--skip-duplicates', help='Skip duplicate MAC addresses', action='store_true')
 
     return parser.parse_args()
 
@@ -74,7 +75,7 @@ def main_cli():
     csv_file_path = args.csv_file
 
     # Parse CSV and create map
-    access_points_data = parse_csv(csv_file_path)
+    access_points_data = parse_csv(csv_file_path, skip_duplicates=args.skip_duplicates)
     
     # Add filters if provided
     if args.ssid:

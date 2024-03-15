@@ -1,6 +1,6 @@
 # DrivePy
 
-Simple Python script that parses Marauder Wardriving CSV files, and submits parsed data to a map.
+Simple Python script that parses Wardriving CSV files, and submits parsed data to a map.
 
 ## Usage
 
