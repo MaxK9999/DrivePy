@@ -62,10 +62,10 @@ def parse_args():
     
     # Add logging options to the logging group
     logging_group.add_argument('--sort-by-ssid', help='Sort access points alphabetically by SSID', action='store_true')
+    logging_group.add_argument('--skip-duplicates', help='Skip duplicate MAC addresses', action='store_true')
 
     # Positional argument
     parser.add_argument('csv_file', nargs='?', default=None, help='Path to the CSV file containing wardriving data')
-    parser.add_argument('--skip-duplicates', help='Skip duplicate MAC addresses', action='store_true')
 
     return parser.parse_args()
 

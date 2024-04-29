@@ -36,19 +36,23 @@ def get_ssid(ap):
 
 
 def create_gui():
+    # Set theme
     customtkinter.set_appearance_mode("dark")
     customtkinter.set_default_color_theme("green")
 
+    # GUI params
     root = customtkinter.CTk()
-    root.geometry("500x500")
+    root.geometry("700x580")
     root.title("DrivePy")
+    
 
     frame = customtkinter.CTkFrame(master=root)
     frame.pack(pady=20, padx=60, fill="both", expand=True)
 
     label = customtkinter.CTkLabel(master=frame, text="DrivePy", font=("Roboto", 24))
     label.pack(pady=12, padx=10)
-
+    
+    # Add CSV file input
     entry_var = StringVar()
     entry = customtkinter.CTkEntry(master=frame, textvariable=entry_var, placeholder_text="Enter CSV file")
     entry.pack(pady=12, padx=10)
@@ -72,6 +76,8 @@ def create_gui():
 
     filter_entry = customtkinter.CTkEntry(master=filter_frame, placeholder_text="Enter SSID or MAC")
     filter_entry.grid(row=0, column=2, padx=5)
+    
+    
 
     create_button = customtkinter.CTkButton(
         master=frame,
