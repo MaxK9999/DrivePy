@@ -30,7 +30,8 @@ run `pip install -r requirements.txt`
 
 `pip install -r requirements.txt`
 
-!!! FOR .exe FILE !!! (skip these steps if you do not wish to make a .exe file)
+>[!note]
+>!!! FOR .exe FILE !!! (skip these steps if you do not wish to make a .exe file)
 
 3. Compile the Executable with PyInstaller:
 
