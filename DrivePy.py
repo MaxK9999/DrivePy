@@ -52,7 +52,7 @@ def parse_args():
     logging_group = parser.add_argument_group('Logging Options')
 
     # Add generic options
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.1')
 
     # Add specific options to the specific group
     specific_group.add_argument('-s', '--ssid', help='Filter by SSID, add double quotes to SSID if it contains spaces to prevent bugs.\nPut commas in between multiple SSIDs')
